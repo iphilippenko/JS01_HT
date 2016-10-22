@@ -1,118 +1,63 @@
-
 //define our rectangles
+//first rectangle
 var rect1 = {
-    x1: Math.round(Math.random() * 10),
-    x2: Math.round(Math.random() * 10),
-    y1: Math.round(Math.random() * 10),
-    y2: Math.round(Math.random() * 10)
+    x1: Math.round(Math.random() * 30),
+    x2: Math.round(Math.random() * 30),
+    y1: Math.round(Math.random() * 30),
+    y2: Math.round(Math.random() * 30)
 };
+//second rectangle
 var rect2 = {
-    x1: Math.round(Math.random() * 10),
-    x2: Math.round(Math.random() * 10),
-    y1: Math.round(Math.random() * 10),
-    y2: Math.round(Math.random() * 10)
+    x1: Math.round(Math.random() * 30),
+    x2: Math.round(Math.random() * 30),
+    y1: Math.round(Math.random() * 30),
+    y2: Math.round(Math.random() * 30)
 };
+//rectangle formed by intersecting rect1 and rect2
+var intersecting = {};
 
+var ellipseCoord = [];
 
-for(key in rect1) {
+for (key in rect1) {
     console.log("Rectangle1 " + key + " " + rect1[key]);
 }
-for(key in rect2) {
+for (key in rect2) {
     console.log("Rectangle2 " + key + " " + rect2[key]);
+}
+
+//randomizing
+function getRandomInt(min, max) {
+    let random = min + Math.random() * (max + 1 - min);
+    random = Math.floor(random);
+    return random;
 }
 
 //if rectangles don`t intersect
 if (((rect1.y1 < rect2.y2) || (rect1.y2 > rect2.y1)) && ((rect1.x2 < rect2.x1) || (rect1.x1 > rect2.x2))) {
     alert("Rectangles don't intersect");
-} else { //rectangles intersect
-    let intersectRect = {};
-    let arrayX = [];
-    let arrayY = [];
-    if ((rect1.x2 <= rect2.x2) && (rect1.x1 >= rect2.x1) && (rect1.y1 <= rect2.y1) && (rect1.y2 <= rect2.y2)) { // if rect2 contains rect1
-        intersectRect.side1 = Math.sqrt((rect1.x1 ** 2) + (rect1.x2 ** 2));
-        intersectRect.side2 = Math.sqrt((rect1.y1 ** 2) + (rect1.y2 ** 2));
-        intersectRect.x0 = (rect1.x1 + rect1.x2) / 2;
-        intersectRect.y0 = (rect1.y1 + rect2.y2) / 2;
-    } else if ((rect2.x2 <= rect1.x2) && (rect2.x1 >= rect1.x1) && (rect2.y1 <= rect1.y1) && (rect2.y2 <= rect2.y1)) { // if rect1 contains rect2
-        intersectRect.side1 = Math.sqrt((rect2.x1 ** 2) + (rect2.x2 ** 2));
-        intersectRect.side2 = Math.sqrt((rect2.y1 ** 2) + (rect2.y2 ** 2));
-        intersectRect.x0 = (rect2.x1 + rect2.x2) / 2;
-        intersectRect.y0 = (rect2.y1 + rect2.y2) / 2;
-    } else if (rect1.x2 > rect2.x1) {
-        if (rect1.y1 > rect2.y2) {
-            intersectRect.side1 = Math.sqrt((rect2.x1 ** 2) + (rect1.x2 ** 2));
-            intersectRect.side2 = Math.sqrt((rect1.y1 ** 2) + (rect2.y2 ** 2));
-            intersectRect.x0 = (rect2.x1 + rect1.x2) / 2;
-            intersectRect.y0 = (rect1.y1 + rect2.y2) / 2;
-        } else if (rect1.y2 < rect2.y1) {
-            intersectRect.side1 = Math.sqrt((rect2.x1 ** 2) + (rect1.x2 ** 2));
-            intersectRect.side2 = Math.sqrt((rect1.y2 ** 2) + (rect2.y1 ** 2));
-            intersectRect.x0 = (rect2.x1 + rect1.x2) / 2;
-            intersectRect.y0 = (rect1.y1 + rect2.y2) / 2;
-        }
-    } else if (rect2.x2 > rect1.x1) {
-        if (rect2.y1 > rect1.y2) {
-            intersectRect.side1 = Math.sqrt((rect1.x1 ** 2) + (rect2.x2 ** 2));
-            intersectRect.side2 = Math.sqrt((rect2.y1 ** 2) + (rect1.y2 ** 2));
-            intersectRect.x0 = (rect1.x1 + rect2.x2) / 2;
-            intersectRect.y0 = (rect2.y1 + rect1.y2) / 2;
-        } else if (rect1.y2 < rect2.y1) {
-            intersectRect.side1 = Math.sqrt((rect1.x1 ** 2) + (rect2.x2 ** 2));
-            intersectRect.side2 = Math.sqrt((rect2.y2 ** 2) + (rect1.y1 ** 2));
-            intersectRect.x0 = (rect1.x1 + rect2.x2) / 2;
-            intersectRect.y0 = (rect2.y1 + rect1.y2) / 2;
-        }
-    } else if (rect1.y2 >= rect2.y2) {
-        if (rect1.x2 > rect2.x1) {
-            intersectRect.side1 = Math.sqrt((rect1.x2 ** 2) + (rect2.x1 ** 2));
-            intersectRect.side2 = Math.sqrt((rect2.y2 ** 2) + (rect1.y2 ** 2));
-            intersectRect.x0 = (rect1.x2 + rect2.x1) / 2;
-            intersectRect.y0 = (rect2.y2 + rect1.y2) / 2;
-        }
-        if (rect1.x2 < rect2.x1) {
-            intersectRect.side1 = Math.sqrt((rect1.x1 ** 2) + (rect2.x2 ** 2));
-            intersectRect.side2 = Math.sqrt((rect1.y1 ** 2) + (rect2.y2 ** 2));
-            intersectRect.x0 = (rect1.x1 + rect2.x2) / 2;
-            intersectRect.y0 = (rect1.y1 + rect2.y2) / 2;
+} else {
+    //coordinates of intersecting
+    intersecting.x1 = Math.max(rect1.x1, rect2.x1);
+    intersecting.y1 = Math.min(rect1.y1, rect2.y1);
+    intersecting.x2 = Math.min(rect1.x2, rect2.x2);
+    intersecting.y2 = Math.min(rect1.y2, rect2.y2);
+
+    //half sides of rectangle or semi axis of ellipse
+    intersecting.semiAxisA = (Math.max(intersecting.x1, intersecting.x2) - Math.min(intersecting.x1, intersecting.x2)) / 2;
+    intersecting.semiAxisB = (Math.max(intersecting.y1, intersecting.y2) - Math.min(intersecting.y1, intersecting.y2)) / 2;
+
+    //coordinates of the center of the ellipse
+    intersecting.x0 = (intersecting.x1 + intersecting.x2) / 2;
+    intersecting.y0 = (intersecting.y1 + intersecting.y2) / 2;
+
+    //finding, checking and pushing ellipse points
+    while (ellipseCoord.length < 10) {
+        let x = getRandomInt(intersecting.x1, intersecting.x2);
+        let y = getRandomInt(intersecting.y1, intersecting.y2);
+
+        if (((((x - intersecting.x0) / intersecting.semiAxisA) ** 2) + (((y - intersecting.y0) / intersecting.semiAxisB) ** 2) - 1) < 0) {
+            ellipseCoord.push("(" + x + " ," + y + ")");
         }
     }
-    else if (rect2.y2 >= rect1.y2) {
-        if (rect2.x2 > rect1.x1) {
-            intersectRect.side1 = Math.sqrt((rect2.x2 ** 2) + (rect1.x1 ** 2));
-            intersectRect.side2 = Math.sqrt((rect1.y2 ** 2) + (rect2.y2 ** 2));
-            intersectRect.x0 = (rect2.x2 + rect1.x1) / 2;
-            intersectRect.y0 = (rect1.y2 + rect2.y2) / 2;
-        }
-        if (rect1.x2 < rect2.x1) {
-            intersectRect.side1 = Math.sqrt((rect2.x1 ** 2) + (rect1.x2 ** 2));
-            intersectRect.side2 = Math.sqrt((rect2.y1 ** 2) + (rect1.y2 ** 2));
-            intersectRect.x0 = (rect2.x1 + rect1.x2) / 2;
-            intersectRect.y0 = (rect2.y1 + rect1.y2) / 2;
-        }
-    }
-    //finding, checking and pushing coordinates
-    while (arrayX.length < 10) {
-        let x = Math.round(Math.random() * 10);
-        let y = Math.round(Math.random() * 10);
-        if ( ((((x - intersectRect.x0) / (intersectRect.side1 / 2)) ** 2) + (((y - intersectRect.y0) / (intersectRect.side2 / 2)) ** 2) - 1) < 0) {
-            arrayX.push(x);
-            arrayY.push(y);
-            arrayX.length++;
-            arrayY.length++;
-        }
-    }
-    alert("Coordinates:\n x:\n" + arrayX + "\n y: \n" + arrayY);
-}
-if ((rect1.x2 == rect2.x1) || (rect1.x1 == rect2.x2)) { //if rectangles intersect by corners
-    if ((rect1.y2 == rect2.y1) || (rect1.y1 == rect2.y2)) {
-        alert("Rectangles intersect by the corners. Can't find solution.");
-    }
-} else if ((rect1.x2 == rect2.x1) || (rect1.x1 == rect2.x2)) { //if rectangles intersect by the sides
-    if ((rect1.y1 == rect2.y1) && (rect1.y1 == rect2.y2)) {
-        alert("Rectangles intersect by the sides. Can't find solution.");
-    }
-} else if ((rect1.y2 == rect2.y1) || (rect1.y1 == rect2.y2)) { // if rectangles intersect by the sides
-    if ((rect1.x1 == rect2.x1) && (rect1.x2 == rect2.x2)) {
-        alert("Rectangles intersect by the sides. Can't find solution.");
-    }
+    alert("Coordinates: \n" + ellipseCoord);
 }
